@@ -1,0 +1,19 @@
+.enyo-extras-calendar .label {
+	text-align:center;
+}
+
+.enyo-extras-calendar .date {
+	color:#000;
+	text-align:center;
+	background-color:rgba(255,255,255,0.5);
+	margin:1px;
+}
+
+.enyo-extras-calendar .date.fade {
+	color:#777;
+}
+
+.enyo-extras-calendar .date.selected {
+	font-weight:bold;
+	background-color:#8888ff;
+}
