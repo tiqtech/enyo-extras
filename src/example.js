@@ -4,7 +4,7 @@ var _Example = {
 	components:[
 		{kind:"DividerDrawer", caption:"Calendar Picker", open:true, components:[
 			{content:"Open by default because otherwise it doesn't render correctly right now"},
-			{kind:"extras.CalendarPicker", onSelect:"showDate"},
+			{kind:"extras.CalendarPicker", name:"cal", onSelect:"showDate"},
 			{kind:"LabeledContainer", label:"Selected Date:", components:[
 				{name:"dt"}
 			]}
@@ -18,14 +18,16 @@ var _Example = {
 		{kind:"DividerDrawer", caption:"Timer", open:false, components:[
 			{kind:"extras.Timer", name:"timer", onTick:"tick"},
 			{name:"timerField", content:"Click to Toggle Timer", onclick:"toggleTimer"}
-		]}
+		]},
+		{kind:"extras.PrefExample", name:"prefs", onLoad:"prefsReady"}
 	],
 	create:function() {
 		this.inherited(arguments);
-		this.showDate(null, new Date());
+		//this.showDate(null, new Date());
 		this.$.admob.request();
 	},
 	showDate:function(source, date) {
+		this.$.prefs.setSelectedDate(date.getTime());
 		this.$.dt.setContent(date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear());
 	},
 	tick:function(source, time) {
@@ -38,7 +40,18 @@ var _Example = {
 		} else {
 			this.$.timer.start();
 		}
+	},
+	prefsReady:function() {
+		this.$.cal.setDate(new Date(this.$.prefs.getSelectedDate()));
 	}
 };
 
 enyo.kind(_Example);
+
+enyo.kind({
+	name:"extras.PrefExample",
+	kind:"extras.AutoPreferencesService",
+	published:{
+		selectedDate:null
+	}
+});
