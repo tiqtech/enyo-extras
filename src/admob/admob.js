@@ -39,16 +39,16 @@ var _AdMob = {
 		onFailure:""
 	},
 	components:[
-		{className:"_AdMobAd", name:"wrapper", onclick:"onClick", components:[
+		{className:"_AdMobAd", name:"wrapper", onclick:"onClick", style:"clear:none;outline:none;margin:0;border:none;padding: 4px;", components:[
 			{name:"cpc", kind:"HFlexBox", showing:false, components:[
 				{kind:"Image", name:"tile", base:"http://mm.admob.com/static/pre/img/"},
-				{flex:1, name:"cpcWrapper", height:"30px", components:[
-					{name:"text"},
-					{name:"tag", content:"Ads by AdMob"}
+				{flex:1, name:"cpcWrapper", height:"30px", style:"padding: 3px 5px; overflow: hidden;", components:[
+					{name:"text", style:"line-height: 17px; font: bold 12px helvetica;"},
+					{name:"tag", content:"Ads by AdMob", style:"padding-top: 5px; width: 100%; text-align: right;line-height: 13px; font: normal 9.5px helvetica;"}
 				]},
-				{kind:"Image", name:"action", className:"_AdMobAction", src:"http://mm.admob.com/static/pre/img/action_web.png"}
+				{kind:"Image", name:"action", style:"padding: 5px 0", className:"_AdMobAction", src:"http://mm.admob.com/static/pre/img/action_web.png"}
 			]},
-			{name:"cpm", showing:false, components:[
+			{name:"cpm", showing:false, style:"padding: 0; margin: 0; height: 48px;", components:[
 				{kind:"Image", name:"tracking", showing:false},
 				{kind:"Image", name:"cpmImage"}
 			]}
@@ -67,6 +67,9 @@ var _AdMob = {
 			var deviceInfo = enyo.fetchDeviceInfo();
 			this.udid = (deviceInfo) ? deviceInfo.serialNumber : "UNKNOWN";
 		}
+		
+		this.textColorChanged();
+		this.bgColorChanged();
 	},
 	request: function(options) {
 		enyo.log('AdMob Ad Request Pub Id: ', this.pubId);
@@ -88,23 +91,17 @@ var _AdMob = {
 		if (ad.text) {
 			enyo.log('AdMob Ad Request WIN!');
 			this.$.wrapper.url = ad.url;
-			this.$.wrapper.setStyle("clear:none;outline:none;margin:0;border:none;padding: 4px; background-color: " + this.bgColor);
+			
 						
 			var ad_markup = null;
 			if (!ad[20] && ad.banner) { // banner ad
-				this.$.cpm.setStyle("padding: 0; margin: 0; height: 48px;background:url('" + ad.banner + "')");
+				this.$.cpm.applyStyle("background", "url('" + ad.banner + "')");
 				
 				this.$.cpm.setShowing(true);
 				this.$.cpc.setShowing(false);
 			} else { // cpc ad
-				// set bg and text color
-				this.$.cpcWrapper.setStyle("float: left; padding: 3px 5px; overflow: hidden;color:" + this.textColor + ";background-color:" + this.bgColor + ";");
-				
 				this.$.text.setContent(ad.text);
-				this.$.text.setStyle("line-height: 17px; font: bold 12px helvetica;");
-				this.$.tile.setSrc(this.tiles[Math.floor(Math.random() * this.tiles.length)] + ".png");
-				this.$.action.setStyle("padding: 5px 0");
-				this.$.tag.setStyle("padding-top: 5px; width: 100%; text-align: right;line-height: 13px; font: normal 9.5px helvetica;");
+				this.$.tile.setSrc(this.$.tile.base + this.tiles[Math.floor(Math.random() * this.tiles.length)] + ".png");
 				
 				this.$.cpm.setShowing(false);
 				this.$.cpc.setShowing(true);
@@ -114,6 +111,13 @@ var _AdMob = {
 		} else {
 			this.failure(sender, response, request);
 		}
+	},
+	bgColorChanged:function() {
+		this.$.wrapper.applyStyle("background-color", this.bgColor);
+		this.$.cpcWrapper.applyStyle("background-color",this.bgColor);
+	},
+	textColorChanged:function() {
+		this.$.cpcWrapper.applyStyle("color",this.textColor);
 	},
 	failure:function(sender, response, request) {
 		enyo.log('AdMob Ad Request FAIL - no response from server!');
