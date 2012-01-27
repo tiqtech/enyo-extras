@@ -1,5 +1,5 @@
 enyo.depends(
-	"accordian.js",
+	"accordion.js",
 	"Calendar.js",
 	"calendar-picker.css"
 );
