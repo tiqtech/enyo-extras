@@ -1,21 +1,21 @@
 var _Example = {
 	name:"extras.ExampleApp",
-	kind:"Control",
+	kind:"extras.Accordian",
 	components:[
-		{kind:"DividerDrawer", caption:"Calendar Picker", open:true, components:[
+		{kind:"extras.AccordianSection", caption:"Calendar Picker", defaultSection:true, components:[
 			{content:"Open by default because otherwise it doesn't render correctly right now"},
 			{kind:"extras.CalendarPicker", name:"cal", onSelect:"showDate"},
 			{kind:"LabeledContainer", label:"Selected Date:", components:[
 				{name:"dt"}
 			]}
 		]},
-		{kind:"DividerDrawer", caption:"TouchPad Launch Day", open:false, components:[
+		{kind:"extras.AccordianSection", caption:"TouchPad Launch Day", open:false, components:[
 			{kind:"extras.Calendar", flex:1, onlyShowingCurrent:true, date:new Date(2011, 6, 1), selection:new Date(2011, 6, 1)}
 		]},
-		{kind:"DividerDrawer", caption:"AdMob (Experimental)", open:false, components:[
-			{kind:"extras.AdMob", name:"admob", testMode:true, pubId:"YOURPUBID", testMode:true}
+		{kind:"extras.AccordianSection", caption:"AdMob (Experimental)", open:false, components:[
+			{kind:"extras.AdMob", name:"admob", testMode:true, pubId:"PUBID"}
 		]},
-		{kind:"DividerDrawer", caption:"Timer", open:false, components:[
+		{kind:"extras.AccordianSection", caption:"Timer", open:false, components:[
 			{kind:"extras.Timer", name:"timer", onTick:"tick"},
 			{name:"timerField", content:"Click to Toggle Timer", onclick:"toggleTimer"}
 		]},
