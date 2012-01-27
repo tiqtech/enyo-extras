@@ -1,9 +1,9 @@
 /**
-    Accordian is a vertical collection of AccordianSection instances in which only one section's content is visible at a time.
-	If AccordianSection instance has multiple child components, the first will be moved into the header control.  Not really an ideal approach but functional.
+    Accordion is a vertical collection of AccordionSection instances in which only one section's content is visible at a time.
+	If AccordionSection instance has multiple child components, the first will be moved into the header control.  Not really an ideal approach but functional.
 */
 enyo.kind({
-	name:"extras.AccordianSection",
+	name:"extras.AccordionSection",
 	kind:"Control",
 	className:"extras-accordian-section",
 	chrome:[
@@ -61,12 +61,12 @@ enyo.kind({
 });
 
 enyo.kind({
-	name:"extras.Accordian",
+	name:"extras.Accordion",
 	kind:"Control",
 	initComponents:function() {
 		this.inherited(arguments);
 		
-		// register onActivate callback for each AccordianSection
+		// register onActivate callback for each AccordionSection
 		this.eachSection(function(c) {
 			c.onActivate = "sectionActivated";
 		});
@@ -98,11 +98,11 @@ enyo.kind({
 			}
 		}
 	},
-	// utility function to iterate all children of this control that are AccordianSection instances
+	// utility function to iterate all children of this control that are AccordionSection instances
 	eachSection:function(f) {
 		var c = this.getControls();
 		for(var i=0;i<c.length;i++) {
-			if(c[i] instanceof extras.AccordianSection) {
+			if(c[i] instanceof extras.AccordionSection) {
 				f(c[i], i);
 			}
 		}
