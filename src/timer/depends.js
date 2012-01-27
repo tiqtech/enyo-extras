@@ -1,3 +1,0 @@
-enyo.depends(
-	"timer.js"
-);

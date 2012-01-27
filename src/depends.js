@@ -1,7 +1,7 @@
 enyo.depends(
-	"calendar-picker/",
+	"accordian/",
+	"controls/",
 	"admob/",
-	"timer/",
-	"prefs/",
+	"util/",
 	"example.js"
 );
