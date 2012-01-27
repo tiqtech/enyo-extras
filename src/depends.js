@@ -1,5 +1,4 @@
 enyo.depends(
-	"accordian/",
 	"controls/",
 	"admob/",
 	"util/",
