@@ -1,4 +1,5 @@
 enyo.depends(
+	"layout/",
 	"controls/",
 	"admob/",
 	"util/",
