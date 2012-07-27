@@ -4,7 +4,7 @@ enyo.kind({
     kind:"Layout",
     layoutClass:"extras-grid",
     getClientControls:function() {
-        var c$ = this.container.getClientControls(), controls = [];
+        var c$ = this.container.getControls(), controls = [];
         for(var i=0,c;c=c$[i];i++) {
             if(!c.tag) {
                 // assuming that an owner proxy doesn't contain another owner proxy to avoid unnecessary recursion
