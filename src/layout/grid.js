@@ -3,10 +3,22 @@ enyo.kind({
     name:"extras.GridLayout",
     kind:"Layout",
     layoutClass:"extras-grid",
+    getClientControls:function() {
+        var c$ = this.container.getClientControls(), controls = [];
+        for(var i=0,c;c=c$[i];i++) {
+            if(!c.tag) {
+                // assuming that an owner proxy doesn't contain another owner proxy to avoid unnecessary recursion
+                controls.push.apply(controls, c.getClientControls());
+            } else {
+                controls.push(c);
+            }
+        }
+        
+        return controls;
+    },
     // iterates children and repositions them
     positionControls:function() {
-        // check for enyo v1 method
-        var c = (this.container.getControls) ? this.container.getControls() : this.container.getClientControls();
+        var c = this.getClientControls();
         if(c.length === 0) return;
         
         var m2 = this.margin*2,
