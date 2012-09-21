@@ -17,7 +17,7 @@ enyo.kind({
         onValueSelected: ""
     },
     components:[
-        {name: "popup", kind: "onyx.Menu", floating: true, owner: this}
+        {name: "popup", kind: "onyx.Menu", floating: true}
     ],
     input: function(source, event) {
         // cache input instance. means we only support a single input but that's probably okay.
