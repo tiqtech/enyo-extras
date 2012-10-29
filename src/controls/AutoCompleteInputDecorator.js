@@ -46,5 +46,6 @@ enyo.kind({
     },
     itemSelected: function(source, event) {
         this.inputField.setValue(event.content);
+        this.doValueSelected({ value: event.content });
     }
 });
