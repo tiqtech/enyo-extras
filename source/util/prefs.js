@@ -1,6 +1,6 @@
-/**
- * Depends on util/singleton.js
- */
+// needs rework to generalize beyond webOS
+// like the idea of auto-wiring published properties but perhaps data layer should be extensible
+
 var _AutoPref = {
 	name : "extras.AutoPreferencesService",
 	kind : "Component",
