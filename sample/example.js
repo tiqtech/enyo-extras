@@ -60,25 +60,6 @@ enyo.kind({
                 ]},
                 {kind:"onyx.Button", content:"+", ontap:"inc", classes:"onyx-negative"}
             ]}
-        ]},
-        {kind:"extras.AccordionSection", caption:"FittableHeaderLayout", components:[
-            {kind:"onyx.Toolbar", layoutKind:"extras.FittableHeaderLayout", components:[
-                {classes:"title", content:"Just the title", fit:true}
-            ]},
-            {kind:"onyx.Toolbar", layoutKind:"extras.FittableHeaderLayout", components:[
-                {kind:"onyx.Button", content:"Back"},
-                {classes:"title", content:"Back Button", fit:true}
-            ]},
-            {kind:"onyx.Toolbar", layoutKind:"extras.FittableHeaderLayout", components:[
-                {kind:"onyx.Button", content:"Back"},
-                {classes:"title", content:"Buttons on both sides", fit:true},
-                {kind:"onyx.Button", content:"Config"},
-            ]},
-            {kind:"onyx.Toolbar", layoutKind:"extras.FittableHeaderLayout", components:[
-                {kind:"onyx.Button", content:"Back"},
-                {classes:"title", content:"Buttons on both sides", fit:true},
-                {kind:"onyx.Button", content:"Really Long Button to Illustrate"},
-            ]}
         ]}
 	],
 	create:function() {

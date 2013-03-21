@@ -1,8 +1,6 @@
 enyo.depends(
     "AutoCompleteInputDecorator.js",
-	"accordion.js",
-	"Calendar.js",
-	"calendar-picker.css",
+	"Accordion.js",
     "Delegator.js",
     "Menu.js",
     "MenuItem.js",
