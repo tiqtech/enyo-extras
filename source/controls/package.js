@@ -1,0 +1,23 @@
+enyo.depends(
+    "AutoCompleteInputDecorator.js",
+	"accordion.js",
+	"Calendar.js",
+	"calendar-picker.css",
+    "Delegator.js",
+    "Menu.js",
+    "MenuItem.js",
+    "MenuItem.css",
+    "TagInput.js",
+    "TagInput.css",
+    "PrefixedTagInput.js",
+    "TypeAheadInput.js",
+    "TypeAheadInput.css",
+    "ComboInput.js",
+    "WheelPicker.js",
+    "WheelPicker.css",
+    "WheelPickerClient.js",
+    "Overlay.js",
+    "IntegerWheelPicker.js",
+    "IntegerWheelPicker.css",
+    "ColorProgressBar.js"
+);

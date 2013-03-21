@@ -1,0 +1,20 @@
+.extras-wheel-picker {
+  position: relative;
+  background-attachment: local;
+}
+.extras-wheel-picker .extras-wheel-picker-client,
+.extras-wheel-picker .extras-wheel-picker-internal {
+  white-space: nowrap;
+  display: inline-block;
+}
+.extras-wheel-picker .extras-wheel-picker-client .extras-wheel-picker-internal > * {
+  display: inline-block;
+}
+.extras-wheel-picker .extras-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
