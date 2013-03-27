@@ -1,9 +1,0 @@
-{
-	"id": "extras.exampleapp",
-	"version":"0.1.0",
-	"vendor":"Open Source",
-	"type":"web",
-	"main":"index.html",
-	"title":"Enyo Extras",
-	"uiRevision":"2"
-}

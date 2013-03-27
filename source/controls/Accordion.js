@@ -5,11 +5,11 @@
 enyo.kind({
 	name:"extras.AccordionSection",
 	kind:"Control",
-	className:"extras-accordian-section",
+	classes:"extras-accordian-section",
 	chrome:[
-		{kind:"Control", name:"header", onclick:"headerClicked", className:"extras-accordian-section-header"},
-		{kind:"Control", name:"client", className:"extras-accordian-section-content", style:"height:0px;overflow:hidden"},
-		{kind:"Animator", name:"animator", duration:500, tick:20, onAnimate:"animateDrawer"}
+		{kind:"Control", name:"header", ontap:"headerClicked", classes:"extras-accordian-section-header"},
+		{kind:"Control", name:"client", classes:"extras-accordian-section-content", style:"height:0px;overflow:hidden"},
+		{kind:"Animator", name:"animator", duration:500, onStep:"animateDrawer"}
 	],
 	published:{
 		height:0,
@@ -22,66 +22,64 @@ enyo.kind({
 		this.inherited(arguments);
 		this.captionChanged();
 	},
-	createChrome:function() {
-		this.inherited(arguments);
-		
+	initComponents:function() {
+        this.createComponents(this.chrome, {owner:this});
+        
 		// if section is declared inline, children will be in this.components.
 		// if declared as its own kind, they'll be in this.kindComponents.
 		var comp = this.components || this.kindComponents;
 		
 		if(comp.length > 1 && !this.caption) {
 			var c = comp.splice(0, 1);
-			this.$.header.createComponents(c, {owner:this});
+			this.$.header.createComponent(c);
 		}
+        
+        this.inherited(arguments);
 	},
 	headerClicked:function() {
 		// by default, clicking the header will activate the section
 		this.doActivate();
 	},
-	heightChanged:function(oldValue) {
-		// strip any trailing characters (e.g. 32px -> 32)
-		this.height = parseInt(this.height);
-		
-		// only animate if height changed
-		if(oldValue !== this.height) {
-			this.$.animator.play(oldValue, this.height);
-		}
+	heightChanged:function(oldValue) {		
+        this.$.animator.setStartValue(oldValue);
+        this.$.animator.setEndValue(this.height);
+		this.$.animator.play();
 	},
 	captionChanged:function() {
-		var c = this.chrome[0];
-		if(this.$.header.getControls().length === 0) {
+		if(this.$.header.getClientControls().length === 0) {
 			this.$.header.setContent(this.caption);
 		}
 	},
 	animateDrawer:function(source, value) {
 		// update height with current value (just in case height is changed mid-animation)
-		this.height = value;
-		this.$.client.applyStyle("height", value + "px");
-	}
+		//this.height = source.value;
+		this.$.client.applyStyle("height", Math.round(source.value) + "px");
+	},
+    getHeaderHeight:function() {
+        return this.$.header.getBounds().height;
+    }
 });
 
 enyo.kind({
 	name:"extras.Accordion",
 	kind:"Control",
-	initComponents:function() {
-		this.inherited(arguments);
-		
-		// register onActivate callback for each AccordionSection
-		this.eachSection(function(c) {
-			c.onActivate = "sectionActivated";
-		});
-	},
+    handlers:{
+        onActivate:"sectionActivated"
+    },
 	// calculate adjusted height and select default section upon render
 	rendered:function() {
 		this.inherited(arguments);
 		
-		var n;
-		if(n = this.hasNode()) {
+		this.resizeHandler();
+	},
+    resizeHandler:function() {
+        var n = this.hasNode();
+    	if(n) {
 			var headerHeights = 0;
-			var defaultSection = null;
+			var defaultSection = this.activeSection;
 			this.eachSection(function(c) {
 				// sum heights of all section headers (since content is 0px initially)
-				headerHeights += c.hasNode().offsetHeight;
+				headerHeights += c.getHeaderHeight();
 				
 				// find default section
 				if(defaultSection === null || c.defaultSection === true) {
@@ -90,14 +88,14 @@ enyo.kind({
 			});
 			
 			// store adjustedHeight for later.  will be passed to sections on activation
-			this.adjustedHeight = n.offsetHeight - headerHeights;
+			this.adjustedHeight = this.getBounds().height - headerHeights;
 			
 			// will be valid if any sections are included as child components
 			if(defaultSection) {
 				defaultSection.setHeight(this.adjustedHeight);
 			}
 		}
-	},
+    },
 	// utility function to iterate all children of this control that are AccordionSection instances
 	eachSection:function(f) {
 		var c = this.getControls();
@@ -109,6 +107,8 @@ enyo.kind({
 	},
 	// onActivate handler
 	sectionActivated:function(source) {
+        this.activeSection = source;
+        
 		// grow activated section
 		source.setHeight(this.adjustedHeight);
 		

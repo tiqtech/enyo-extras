@@ -1,3 +1,3 @@
 enyo.depends(
-	"admob.js"
+	"timer.js"
 );
