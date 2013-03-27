@@ -106,15 +106,18 @@ enyo.kind({
 		}
 	},
 	// onActivate handler
-	sectionActivated:function(source) {
-        this.activeSection = source;
+	sectionActivated:function(source, event) {
+        if(!(event.originator instanceof extras.AccordionSection)) return;
+        
+        var s = event.originator;
+        this.activeSection = s;
         
 		// grow activated section
-		source.setHeight(this.adjustedHeight);
+		s.setHeight(this.adjustedHeight);
 		
 		// shrink all other sections
 		this.eachSection(function(c) {
-			if(c !== source) {
+			if(c !== s) {
 				c.setHeight(0);
 			}
 		});

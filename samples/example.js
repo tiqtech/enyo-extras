@@ -3,24 +3,17 @@ enyo.kind({
 	kind:"extras.Accordion",
     classes:"enyo-unselectable",
 	components:[
-//		{kind:"extras.AccordionSection", caption:"Calendar Picker", defaultSection:true, components:[
-//			{content:"Open by default because otherwise it doesn't render correctly right now"},
-//			{kind:"extras.CalendarPicker", name:"cal", onSelect:"showDate"},
-//			{kind:"LabeledContainer", label:"Selected Date:", components:[
-//				{name:"dt"}
-//			]}
-//		]},
-//		{kind:"extras.AccordionSection", caption:"TouchPad Launch Day", open:false, components:[
-//			{kind:"extras.Calendar", flex:1, onlyShowingCurrent:true, date:new Date(2011, 6, 1), selection:new Date(2011, 6, 1)}
-//		]},
-		{kind:"extras.AccordionSection", caption:"Animated Grid", open:false, components:[
+        {name:"home", kind:"extras.AccordionSection", caption:"enyo-extras Samples", defaultSection:true, components:[
+    		{content:"enyo-extras is a set of components for the <a href='http://enyojs.com'>Enyo</a> framework. Select a heading below to see them in action", allowHtml:true, style:"margin:10px;"}
+		]},
+		{name:"gridlayout", kind:"extras.AccordionSection", caption:"Animated Grid", components:[
 			{kind:"extras.Grid", name:"grid", cellWidth:75, cellHeight:75, gridAlign:"center"}
 		]},
-		{kind:"extras.AccordionSection", caption:"Timer", open:false, components:[
+		{name:"time", kind:"extras.AccordionSection", caption:"Timer", components:[
 			{kind:"extras.Timer", name:"timer", onTick:"tick"},
 			{name:"timerField", content:"Click to Toggle Timer", onclick:"toggleTimer"}
 		]},
-        {kind:"extras.AccordionSection", caption:"Input Fields", components:[
+        {name:"input", kind:"extras.AccordionSection", caption:"Input Fields", components:[
             {kind:"onyx.Groupbox", style:"margin:1em;", components:[
                 {kind:"extras.AutoCompleteInputDecorator", style:"width:100%;box-sizing:border-box;", values:["enyo", "onyx", "layout", "canvas"], components:[
                     {kind:"onyx.Input", placeholder:"Enyo Libs (AutoCompleteInputDecorator)", style:"width:100%"}
@@ -37,7 +30,7 @@ enyo.kind({
                 {kind:"extras.ComboInput", placeholder:"'M' Names (ComboInput)", values:["Mary", "Martin", "Matthew", "Mark", "Marvin", "Myra", "Maureen", "Michael"]}
             ]}
         ]},
-        {kind:"extras.AccordionSection", caption:"Wheel Pickers", components:[
+        {name:"wheel", kind:"extras.AccordionSection", caption:"Wheel Pickers", components:[
             {kind:"onyx.Groupbox", style:"margin:1em;width:250px", components:[
                 {kind:"onyx.InputDecorator", style:"width:100%;box-sizing:border-box;", components:[
                     {name:"r", kind:"RGBPicker", style:"height:30px;width:100%", component:"r", onScroll:"rgbScroll"},
@@ -65,7 +58,7 @@ enyo.kind({
                 ]}
             ]}
         ]},
-        {kind:"extras.AccordionSection", caption:"Color Progress Bar", components:[
+        {name:"progressbar", kind:"extras.AccordionSection", caption:"Color Progress Bar", components:[
             {kind:"FittableColumns", noStretch:true, style:"padding:20px;", components:[
                 {kind:"onyx.Button", content:"-", ontap:"dec", classes:"onyx-affirmative"},
                 {name:"cpb", kind:"extras.ColorProgressBar", fit:true, maxColor:"#f44", minColor:"#40f040", colorStops:[
@@ -75,7 +68,8 @@ enyo.kind({
                 ]},
                 {kind:"onyx.Button", content:"+", ontap:"inc", classes:"onyx-negative"}
             ]}
-        ]}
+        ]},
+        {name:"vs", kind:"extras.ViewState", path:"~", onRestoreState:"restoreState"}
 	],
 	create:function() {
 		this.inherited(arguments);
@@ -136,7 +130,7 @@ enyo.kind({
             this.defer = true;
             setTimeout(enyo.bind(this, function() {
                 this.defer = false;
-            }), 500);
+            }), 250);
         }
     },
     inc:function() {
@@ -144,6 +138,23 @@ enyo.kind({
     },
     dec:function() {
         this.$.cpb.animateProgressTo(this.$.cpb.progress-5);
+    },
+    restoreState:function(source, event) {
+        var key = event.data.key;
+        
+        key == "home" && this.$.home.doActivate() ||
+        key == "gridlayout" && this.$.gridlayout.doActivate() ||
+        key == "time" && this.$.time.doActivate() ||
+        key == "input" && this.$.input.doActivate() ||
+        key == "wheel" && this.$.wheel.doActivate() ||
+        key == "progressbar" && this.$.progressbar.doActivate();
+    },
+    sectionActivated:function(source, event) {
+        this.inherited(arguments);
+        
+        if(event.originator instanceof extras.AccordionSection) {
+            this.$.vs.save({key:this.activeSection.name});
+        }
     }
 });
 

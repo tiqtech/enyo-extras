@@ -79,8 +79,6 @@ enyo.kind({
             for(var i=0,l=this._cs.length;i<l;i++) {
                 this._cs[i].color = this.toDec(this._cs[i].color);
             }
-            
-            this.log(this._cs);
         }
         
         var barColor = ["#"],
@@ -91,8 +89,6 @@ enyo.kind({
             var c = color[k].toString(16);
             barColor.push(c.length == 2 ? c : "0"+c);
         }
-        
-        this.log(lerp, barColor);
         
         this.$.bar.applyStyle("background-color", barColor.join(""));
     },
