@@ -28,7 +28,7 @@ var _Timer = {
 		var diff = now - this.startTime - this.pauseTime;
 		this.time = this.toTime(diff)
 		
-		this.doTick(diff);
+		this.doTick({time:this.time, diff:diff});
 		
 		return now;
 	},
