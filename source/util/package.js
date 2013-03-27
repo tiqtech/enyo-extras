@@ -1,3 +1,6 @@
 enyo.depends(
-	"timer.js"
+	"timer.js",
+    "ViewStateStrategy.js",
+    "HashViewStateStrategy.js",
+    "ViewState.js"
 );
