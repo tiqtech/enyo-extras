@@ -1,13 +1,13 @@
 enyo.kind({
     name:"extras.WheelPickerClient",
-    classes:"extras-wheel-picker-client",
+    classes:"extras-wheelpicker-client",
     published:{
         leftSpace:0,
         rightSpace:0
     },
     components:[
         {name:"lSpace", style:"display:inline-block"},
-        {name:"client", classes:"extras-wheel-picker-internal"},
+        {name:"client", classes:"extras-wheelpicker-internal"},
         {name:"rSpace", style:"display:inline-block"}
     ],
     create:function() {

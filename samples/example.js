@@ -21,7 +21,7 @@ enyo.kind({
 			{name:"timerField", content:"Click to Toggle Timer", onclick:"toggleTimer"}
 		]},
         {kind:"extras.AccordionSection", caption:"Input Fields", components:[
-            {kind:"onyx.Groupbox", style:"margin:1em", components:[
+            {kind:"onyx.Groupbox", style:"margin:1em;", components:[
                 {kind:"extras.AutoCompleteInputDecorator", style:"width:100%;box-sizing:border-box;", values:["enyo", "onyx", "layout", "canvas"], components:[
                     {kind:"onyx.Input", placeholder:"Enyo Libs (AutoCompleteInputDecorator)", style:"width:100%"}
                 ]},
@@ -38,15 +38,30 @@ enyo.kind({
             ]}
         ]},
         {kind:"extras.AccordionSection", caption:"Wheel Pickers", components:[
-            {kind:"onyx.Groupbox", style:"margin:1em", components:[
+            {kind:"onyx.Groupbox", style:"margin:1em;width:250px", components:[
                 {kind:"onyx.InputDecorator", style:"width:100%;box-sizing:border-box;", components:[
                     {name:"r", kind:"RGBPicker", style:"height:30px;width:100%", component:"r", onScroll:"rgbScroll"},
                     {name:"g", kind:"RGBPicker", style:"height:30px;width:100%", component:"g", onScroll:"rgbScroll"},
                     {name:"b", kind:"RGBPicker", style:"height:30px;width:100%", component:"b", onScroll:"rgbScroll"},
-                    {name:"result", content:"resulting color"}
+                    {name:"result", content:"resulting color", style:"width:100%;text-align:center;padding:3px;box-sizing: border-box;-moz-box-sizing: border-box"}
                 ]},
                 {kind:"onyx.InputDecorator", style:"width:100%;box-sizing:border-box;", components:[
-                    {kind:"extras.IntegerWheelPicker", min:-10, max:10, value:0}
+                    {kind:"extras.WheelPicker", components:[
+                        {kind:"onyx.Button", content:"Washington"},
+                        {kind:"onyx.Button", content:"Adams"},
+                        {kind:"onyx.Button", content:"Jefferson"},
+                        {kind:"onyx.Button", content:"Madison"},
+                        {kind:"onyx.Button", content:"Monroe"},
+                        {kind:"onyx.Button", content:"JQ Adams"},
+                        {kind:"onyx.Button", content:"Jackson"},
+                        {kind:"onyx.Button", content:"Van Buren"},
+                        {kind:"onyx.Button", content:"Harrison"},
+                        {kind:"onyx.Button", content:"Tyler"}
+                        
+                    ]}
+                ]},
+                {kind:"onyx.InputDecorator", style:"width:100%;box-sizing:border-box;", components:[
+                    {kind:"extras.IntegerWheelPicker", min:-10, max:10, value:0, style:"width:100%"}
                 ]}
             ]}
         ]},
@@ -110,6 +125,7 @@ enyo.kind({
     rgbScroll:function(source, event) {
         if(!this.defer) {
             this.$.result.applyStyle("background-color", "rgb("+this.$.r.r+","+this.$.g.g+","+this.$.b.b+")");
+            this.$.result.applyStyle("color", (this.$.r.r+this.$.g.g+this.$.b.b)/3 < 100 ? "#fff" : "#000");
             
             for(var k in {r:1, g:1, b:1}) {
                 if(k !== event.component) {
@@ -135,6 +151,7 @@ enyo.kind({
     name:"RGBPicker",
     kind:"extras.WheelPicker",
     snap:false,
+    overlay:false,
     published:{
         r:0,
         g:0,
@@ -167,7 +184,8 @@ enyo.kind({
         n.height = bounds.height;
         this.draw();
         
-        this.inherited(arguments);
+        this.$.wpc.setLeftSpace(bounds.width/2);
+        this.$.wpc.setRightSpace(bounds.width/2);
     },
     draw:function() {
         var n = this.$.canvas.hasNode();

@@ -1,9 +1,0 @@
-.integer-wheel-picker .wheel-picker-item {
-    margin:3px;
-    text-align:center;
-    width:100px;
-}
-
-.integer-wheel-picker .wheel-picker-item.selected {
-    background:#ffff88;
-}

@@ -4,8 +4,10 @@ enyo.kind({
     touch:true,
     vertical:"hidden",
     horizontal:"scroll",
-    classes:"extras-wheel-picker",
+    classes:"extras-wheelpicker",
     thumb:false,
+    touchOverscroll:false,
+    snap:true,
     published:{
         overlay:true,
         overlayClasses:"",
@@ -20,11 +22,11 @@ enyo.kind({
     create:function() {
         this.inherited(arguments);
 
+        this.indexChanged();
+
         // tweak scrolling
-        enyo.mixin(this.$.scrollMath, {
-            kFrictionDamping:0.3,
-            kDragDamping:0.25,
-            kSnapFriction:0.3
+        enyo.mixin(this.$.strategy.$.scrollMath, {
+            kFrictionDamping:0.9
         });
     },
     initComponents:function() {
@@ -35,6 +37,14 @@ enyo.kind({
         this.inherited(arguments);
         
         this.createComponent({name:"wpc", kind:"extras.WheelPickerClient", owner:this}).createComponents(c, {owner:this.owner});
+    },
+    indexChanged: function() {
+        if(this.index >= 0) {
+            var c = this.$.wpc.getChildren()[this.index];
+            var left = Math.round(this.calcExtents(c).center.x - this.calcMid().half);
+            
+            this.scrollTo(left,0);
+        }
     },
     overlayChanged:function() {
         if(this.overlay && !this.$.overlay) {
@@ -64,15 +74,8 @@ enyo.kind({
             c1 = c[0],
             c2 = c[c.length-1];
         
-        if(c1) {
-            if(this.snap) {
-                this.$.wpc.setLeftSpace(Math.round(w/2-c1.getBounds().width/2));
-                this.$.wpc.setRightSpace(Math.round(w/2-c2.getBounds().width/2));
-            } else {
-                this.$.wpc.setLeftSpace(Math.round(w/2));
-                this.$.wpc.setRightSpace(Math.round(w/2));
-            }
-        }
+        this.$.wpc.setLeftSpace(Math.round(w/2-c1.getBounds().width/2));
+        this.$.wpc.setRightSpace(Math.round(w/2-c2.getBounds().width/2));
     },
     scrollStart:function(source, event) {
         this.inherited(arguments);
@@ -116,8 +119,6 @@ enyo.kind({
         };
     },
     centerScroller:function() {
-        if(!this.snap) return;
-        
         var c = this.$.wpc.getChildren();
         var mid = this.calcMid();
         
@@ -128,7 +129,7 @@ enyo.kind({
                 var left = Math.round(e.center.x - mid.half);
                 if(left != this.getScrollLeft()) {
                     this.selectIndex(i);
-                    this.scrollTo(left,0);
+                    this.snap && this.scrollTo(left,0);
                 }
                 break;
             }
@@ -146,5 +147,5 @@ enyo.kind({
         this.index = event.index;
         this.selectedItem = event.selected;
         this.selectedItem.addClass("selected");
-    }
+    }        
 });
