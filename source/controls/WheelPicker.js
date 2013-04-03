@@ -8,6 +8,7 @@ enyo.kind({
     thumb:false,
     touchOverscroll:false,
     snap:true,
+    preventDragPropagation: false,
     published:{
         overlay:true,
         overlayClasses:"",
@@ -17,7 +18,9 @@ enyo.kind({
         onSelect:""
     },
     handlers:{
-        onSelect:"itemSelected"
+        onSelect:"itemSelected",
+        ondragstart: "resetScrollFix",
+        onflick: "resetScrollFix"
     },
     create:function() {
         this.inherited(arguments);
@@ -90,6 +93,11 @@ enyo.kind({
         this.inherited(arguments);
         if(this.fixingPosition == 2) return;
         this.centerScroller();
+    },
+    resetScrollFix: function(inSender, inEvent) {
+        // if we get a drag or flick, it's a user action so we're not
+        // fixing the position any longer
+        this.fixingPosition = 0;
     },
     calcExtents:function(c) {
         var b = c.getBounds();
