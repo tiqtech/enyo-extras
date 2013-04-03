@@ -5023,8 +5023,7 @@ var e = this.hasNode();
 if (e) {
 var t = 0, n = this.activeSection;
 this.eachSection(function(e) {
-t += e.getHeaderHeight();
-if (n === null || e.defaultSection === !0) n = e;
+t += e.getHeaderHeight(), n === null && e.defaultSection === !0 && (n = e);
 }), this.adjustedHeight = this.getBounds().height - t, n && n.setHeight(this.adjustedHeight);
 }
 },
@@ -5329,6 +5328,7 @@ classes: "extras-wheelpicker",
 thumb: !1,
 touchOverscroll: !1,
 snap: !0,
+preventDragPropagation: !1,
 published: {
 overlay: !0,
 overlayClasses: "",
@@ -5338,7 +5338,9 @@ events: {
 onSelect: ""
 },
 handlers: {
-onSelect: "itemSelected"
+onSelect: "itemSelected",
+ondragstart: "resetScrollFix",
+onflick: "resetScrollFix"
 },
 create: function() {
 this.inherited(arguments), this.indexChanged(), enyo.mixin(this.$.strategy.$.scrollMath, {
@@ -5391,6 +5393,9 @@ scrollStop: function(e, t) {
 this.inherited(arguments);
 if (this.fixingPosition == 2) return;
 this.centerScroller();
+},
+resetScrollFix: function(e, t) {
+this.fixingPosition = 0;
 },
 calcExtents: function(e) {
 var t = e.getBounds(), n = enyo.dom.calcMarginExtents(e.hasNode()), r = {
