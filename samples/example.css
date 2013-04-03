@@ -1,0 +1,23 @@
+.extras-accordian-section-header {
+	height:40px;
+	line-height:40px;
+	padding:5px;
+	background:rgb(17,59,157) url(lib/onyx/images/gradient.png) bottom left repeat-x;
+	color:#fff;
+}
+
+.extras-accordian-section-content {
+	background:rgb(240,240,240);
+}
+
+.grid-button {
+	height:65px;
+	width:65px;
+    margin-left:5px;
+    margin-top:5px;
+	z-index:0;
+}
+
+.onyx-toolbar .title {
+    text-align:center;
+}
