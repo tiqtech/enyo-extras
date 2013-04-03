@@ -82,7 +82,7 @@ enyo.kind({
 				headerHeights += c.getHeaderHeight();
 				
 				// find default section
-				if(defaultSection === null || c.defaultSection === true) {
+				if(defaultSection === null && c.defaultSection === true) {
 					defaultSection = c;
 				}
 			});
