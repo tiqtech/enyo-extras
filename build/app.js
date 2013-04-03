@@ -5328,6 +5328,7 @@ classes: "extras-wheelpicker",
 thumb: !1,
 touchOverscroll: !1,
 snap: !0,
+preventDragPropagation: !1,
 published: {
 overlay: !0,
 overlayClasses: "",
@@ -5337,7 +5338,9 @@ events: {
 onSelect: ""
 },
 handlers: {
-onSelect: "itemSelected"
+onSelect: "itemSelected",
+ondragstart: "resetScrollFix",
+onflick: "resetScrollFix"
 },
 create: function() {
 this.inherited(arguments), this.indexChanged(), enyo.mixin(this.$.strategy.$.scrollMath, {
@@ -5390,6 +5393,9 @@ scrollStop: function(e, t) {
 this.inherited(arguments);
 if (this.fixingPosition == 2) return;
 this.centerScroller();
+},
+resetScrollFix: function(e, t) {
+this.fixingPosition = 0;
 },
 calcExtents: function(e) {
 var t = e.getBounds(), n = enyo.dom.calcMarginExtents(e.hasNode()), r = {
