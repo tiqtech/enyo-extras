@@ -41,6 +41,9 @@ enyo.kind({
         
         this.createComponent({name:"wpc", kind:"extras.WheelPickerClient", owner:this}).createComponents(c, {owner:this.owner});
     },
+    setIndex: function(value) {
+        this.setPropertyValue("index", value, "indexChanged");
+    },
     indexChanged: function() {
         if(this.index >= 0) {
             var c = this.$.wpc.getChildren()[this.index];
