@@ -35,6 +35,9 @@ enyo.kind({
                 return this.getManager().pop();
             }
         },
+        replace:function(path, state) {
+            this.getManager().replace(path, state);
+        },
         register:function(path, handler) {
             this.getManager().register(path, handler);
         }
@@ -44,12 +47,16 @@ enyo.kind({
         this.pathChanged();
     },
     pathChanged: function() {
-        if(this.path) {
-            extras.ViewState.register(this.path, this);
-        }
+        extras.ViewState.register(this.path, this);
     },
-    save: function(data) {
-        this.noSave || extras.ViewState.push(this.path, data)
+    save: function(data, replace) {
+        if(!this.noSave) {
+            if(replace) {
+                extras.ViewState.replace(this.path, data);
+            } else {
+                extras.ViewState.push(this.path, data);
+            }
+        }
     },
     restore:function(data) {
         this.noSave = true;
