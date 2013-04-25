@@ -12,19 +12,25 @@ enyo.kind({
     //* @public
     push: function(path, data) {
         this.depth++;
-        var paths = this.split(path);
-        this.bubble({
-            state: [{
-                path: paths.pop(),
-                data: data}],
-            paths: paths
-        });
+        this._push(path, data, false);
     },
     pop:function() {
         this.depth = Math.max(0, this.depth-1);
         this.restoreState(this.getState());
 
         return true;
+    },
+    replace: function(path, data) {
+        this._push(path, data, true);
+    },
+    _push: function(path, data, replace) {
+        var paths = this.split(path);
+        this.bubble({
+            state: [{
+                path: paths.pop(),
+                data: data}],
+            paths: paths
+        }, replace);
     },
     register:function(path, handler) {
         // first registered default handler will receive empty path restores
@@ -46,11 +52,10 @@ enyo.kind({
         return this.depth > 0;
     },
     //* override in a subkind to do real work
-    setState:function(viewState) {},
-    getState:function() {},
+    saveState:function(viewState, replace) {},
     activate:function() {},
     //* @protected
-    bubble: function(viewState) {
+    bubble: function(viewState, replace) {
         if (viewState.paths.length > 0) {
             var node = this.findNode(viewState.paths),
                 path = viewState.paths.pop();
@@ -66,9 +71,9 @@ enyo.kind({
                 viewState.state.unshift(event);
             }
 
-            this.bubble(viewState);
+            this.bubble(viewState, replace);
         } else {
-            this.saveState(viewState);
+            this.saveState(viewState, replace);
         }
     },
     restoreState:function(state) {
