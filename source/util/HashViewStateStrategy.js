@@ -44,8 +44,12 @@ enyo.kind({
 
         return "#"+path.join("/");
     },
-    saveState:function(viewState) {
+    saveState:function(viewState, replace) {
         this.suppress = true;
-        window.location.hash = this.buildPath(viewState);
+        if(replace) {
+            window.location.replace(window.location.protocol + "//" + window.location.host + window.location.pathname + this.buildPath(viewState));
+        } else {
+            window.location.hash = this.buildPath(viewState);
+        }
     }
 });
