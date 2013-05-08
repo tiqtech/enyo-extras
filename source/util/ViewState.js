@@ -47,7 +47,9 @@ enyo.kind({
         this.pathChanged();
     },
     pathChanged: function() {
-        extras.ViewState.register(this.path, this);
+        if(this.path) {
+            extras.ViewState.register(this.path, this);
+        }
     },
     save: function(data, replace) {
         if(!this.noSave) {
