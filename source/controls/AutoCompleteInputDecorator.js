@@ -45,9 +45,7 @@ enyo.kind({
         }), 500);
     },
     valuesChanged: function() {
-        if(this.$.popup.getShowing()) {
-            this.renderValues();
-        }
+        this.renderValues();
     },
     renderValues:function() {
         var v = this.inputField.getValue();
