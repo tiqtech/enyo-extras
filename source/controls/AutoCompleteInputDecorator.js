@@ -48,7 +48,7 @@ enyo.kind({
         this.renderValues();
     },
     renderValues:function() {
-        var v = this.inputField.getValue();
+        var v = this.inputField && this.inputField.getValue();
         if(v && this.values && this.values.length > 0) {
             this.$.popup.destroyClientControls();
             var c = [];
@@ -87,7 +87,7 @@ enyo.kind({
     itemSelected: function(source, event) {
         this.log("selected");
         this.inputField.setValue(event.content);
-        this.doValueSelected({ value: event.content });
+        this.doValueSelected({ value: event.content, index: source.index });
     },
     keyUp:function(source, event) {
         if(source instanceof onyx.Menu) return;
