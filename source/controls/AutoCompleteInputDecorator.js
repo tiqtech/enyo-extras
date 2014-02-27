@@ -78,8 +78,11 @@ enyo.kind({
             return String(input).toLowerCase() == String(value).toLowerCase();
         }
     },
+    escapeRegExp:function(str) {
+      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    },
     filter:function(input, value) {
-        return new RegExp(input, this.caseSensitive ? "g" : "ig").test(value);
+        return new RegExp(this.escapeRegExp(input), this.caseSensitive ? "g" : "ig").test(value);
     },
     itemSelected: function(source, event) {
         this.log("selected");
