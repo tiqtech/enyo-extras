@@ -1,28 +1,47 @@
 enyo.kind({
 	name:"extras.TypeAheadInput",
 	classes:"extras-typeahead-input",
+
+	//* Events
 	events:{
 		onAcceptSuggestion:""
 	},
+
+	//* Properties
 	published:{
+		value: "",
 		suggestion:""
 	},
+	suggestionChanged:function() {
+		this.$.shadow.set("value", this.suggestion);
+	},
+
+	//* Components
+	bindings: [
+		// only a one-way binding because this.value will be updated onblur
+		{from:".value", to:".$.main.value", transform:function(v) { return v || ""; }},
+	],
 	tools:[
 		{name:"shadow", kind:"onyx.Input", classes:"shadow", oninput:"shadowInput", onfocus:"shadowFocused"},
 		{name:"main", kind:"onyx.Input", classes:"primary", onkeydown:"mainKeydown", onflick:"flicked", onblur:"blurred", onfocus:"mainFocused", oninput:"mainInput", ontap:"mainTapped"},
 		{name:"delegator", kind:"extras.Delegator", members:["placeholder", "value", "type", "disabled", "selectOnFocus", "clear", "focus", "hasFocus", "selectContents"]}
 	],
-	create:function() {
-		this.inherited(arguments);
-		this.$.delegator.setDelegatee(this.$.main);
-	},
-	initComponents:function() {
-		this.createComponents(this.tools, {owner:this});
-		this.inherited(arguments);
-	},
-	suggestionChanged:function() {
-		this.$.shadow.setValue(this.suggestion);
-	},
+
+	//* Lifecycle
+	create: enyo.inherit(function(sup) {
+		return function create() {
+			sup.apply(this, arguments);
+			this.$.delegator.setDelegatee(this.$.main);
+		};
+	}),
+	initComponents: enyo.inherit(function(sup) {
+		return function initComponents() {
+			this.createComponents(this.tools, {owner:this});
+			sup.apply(this, arguments);
+		};
+	}),
+
+	//* Handlers
 	shadowFocused:function(source, event) {
 		this.$.main.focus();
 	},
@@ -30,7 +49,7 @@ enyo.kind({
 		this.suggestionChanged();
 	},
 	mainKeydown:function(source, event) {
-		if(event.which == 9 && this.suggestion) {
+		if(event.which == 9 && this.suggestion && this.suggestion !== this.$.main.get("value")) {
 			this.applySuggestion();
 			event.preventDefault();
 			return true;
@@ -60,12 +79,15 @@ enyo.kind({
 		}
 	},
 	blurred:function() {
-		this.$.shadow.setValue("");
+		this.set("value", this.$.main.get("value"));
+		this.set("suggestion", "");
 	},
+
+	//* Utility
 	applySuggestion:function() {
-		var v = this.$.main.getValue();
-		this.$.main.setValue(this.suggestion);
-		this.setSuggestion("");
-		this.doAcceptSuggestion({priorValue:v, value:this.$.main.getValue()});
-	}
+		var v = this.$.main.get("value");
+		this.$.main.set("value", this.suggestion);
+		this.set("suggestion", "");
+		this.doAcceptSuggestion({priorValue:v, value:this.suggestion});
+	},
 });
