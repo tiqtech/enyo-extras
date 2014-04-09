@@ -8,7 +8,7 @@ enyo.kind({
 		suggestion:""
 	},
 	tools:[
-		{name:"shadow", kind:"onyx.Input", classes:"shadow", oninput:"shadowInput", onfocus:"shadowFocused"},
+		{name:"shadow", kind:"onyx.Input", classes:"shadow", oninput:"shadowInput", onfocus:"shadowFocused", attributes:{tabindex:"-1"}},
 		{name:"main", kind:"onyx.Input", classes:"primary", onkeydown:"mainKeydown", onflick:"flicked", onblur:"blurred", onfocus:"mainFocused", oninput:"mainInput", ontap:"mainTapped"},
 		{name:"delegator", kind:"extras.Delegator", members:["placeholder", "value", "type", "disabled", "selectOnFocus", "clear", "focus", "hasFocus", "selectContents"]}
 	],
