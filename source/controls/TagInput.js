@@ -49,5 +49,20 @@ enyo.kind({
         source.destroy();
         this.reflow();
         this.inputField.focus();
+    },
+    reset:function(){
+        this.inputField.setValue("");
+        this.selectedItems = [];
+        var tag_components = enyo.filter(this.getComponents(),function(component){
+            var classes = component.get('classes');
+            if(classes === 'extras-item'){
+                return true;
+            }
+            return false;
+        });
+        for(var i = 0;i<tag_components.length;i++){
+            tag_components[i].destroy();
+        }
+        this.reflow();
     }
 });
